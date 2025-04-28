@@ -1,0 +1,330 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Dungeon.tsx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "BL1.json": {
+            "scale": 3.5308333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.08496577767288,
+                "y": 79.86783101250884
+            }
+        },
+        "BL3.json": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 138.33333333333334,
+                "y": 60.33333333333334
+            }
+        },
+        "BL4.json": {
+            "scale": 3.5308333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.08496577767288,
+                "y": 79.86783101250884
+            }
+        },
+        "BR3.json": {
+            "scale": 3.5308333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 118.95208874203448,
+                "y": 52.9620014160963
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BL1.json": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BL2.json": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 127.33333333333334,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BL3.json": {
+            "scale": 3.431875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.0509925332362,
+                "y": 80.13112365689311
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BL4.json": {
+            "scale": 3.431875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.0509925332362,
+                "y": 80.13112365689311
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR1.json": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 133.66666666666663,
+                "y": 68
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR2.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR3.json": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 129.66666666666663,
+                "y": 98.66666666666667
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR4.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/Dungeon.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/Spawn1.json": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 260.6666666666667,
+                "y": 116
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/Spawn1.tmx": {
+            "scale": 1.7654166666666666,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 244.13500118008028,
+                "y": 151.80552277554875
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL1.json": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL2.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL3.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL4.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR1.json": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.431875,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 117.13713349116735,
+                "y": 71.97231833910034
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR2.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR3.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120,
+                "y": 80
+            }
+        },
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR4.json": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 178,
+                "y": 139.33333333333331
+            }
+        },
+        "Dungeon.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 2,
+            "scaleInEditor": 5.5
+        },
+        "Spawn1.json": {
+            "scale": 1.7654166666666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 179.56101014869012,
+                "y": 122.35071984894974
+            }
+        },
+        "Spawn1.tmj": {
+            "scale": 1.7654166666666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.16993155534576,
+                "y": 159.7356620250177
+            }
+        },
+        "TL1.json": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 131.33333333333334,
+                "y": 99
+            }
+        },
+        "TL2.json": {
+            "scale": 3.5308333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.08496577767288,
+                "y": 79.86783101250884
+            }
+        },
+        "TL3.json": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 124.66666666666664,
+                "y": 60.33333333333334
+            }
+        },
+        "TL4.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 174,
+                "y": 149
+            }
+        },
+        "TR4.json": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 161,
+                "y": 95
+            }
+        },
+        "Test Map..tmj": {
+            "scale": 1.0662760416666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.04396141164983,
+                "y": 127.54670899987792
+            }
+        },
+        "Test Map.json": {
+            "scale": 1.0662760416666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 120.04396141164983,
+                "y": 127.54670899987792
+            }
+        },
+        "Test Map.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 144.5,
+                "y": 77.5
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Assets/Map",
+    "last.externalTilesetPath": "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Projects",
+    "last.imagePath": "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Assets/Map",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
+    "map.fixedSize": true,
+    "map.height": 10,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": "1",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 15,
+    "openFiles": [
+        "Test Map.tmx",
+        "Dungeon.tsx"
+    ],
+    "project": "Dungeon #1.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "Test Map.tmx",
+        "Dungeon.tsx",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR3.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR1.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL1.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BR1.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/BL1.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR4.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR3.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TR2.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL4.json",
+        "C:/Users/signi/OneDrive/Desktop/Python Projects/Pygame Jam/Dungeon Assets/Dungeon Presets/TL3.json"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
