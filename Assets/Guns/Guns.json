@@ -10,10 +10,10 @@
   },
   "smg": {
     "spread": 10,
-    "fire rate": 130,
+    "fire rate": 100,
     "damage": 30,
     "speed": 300,
-    "bps": 2,
+    "bps": 1,
     "offsetX": -50,
     "offsetY": -15
   }

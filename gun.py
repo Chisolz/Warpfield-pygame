@@ -4,12 +4,12 @@ import json
 import random
 from pathlib import Path
 
+assets = Path('Assets/Guns')
 
 class Gun:
     def __init__(self):
         self.guns = {}
         self.gunsFlipped = {}
-        assets = Path('Assets/Guns')
         for file in assets.iterdir():
             if file.is_file():
                 if file.name.endswith('.png'):
@@ -81,6 +81,13 @@ class Gun:
         window.blit(self.rotated_gun, (x - offset.x, y - offset.y))
 
 
+class GunDrop(Gun):
+    def __init__(self, spawnPos, gunName):
+        super().__init__()
+        self.position = spawnPos
+        self.gunName = gunName
+        
+
 class Bullet:
     def __init__(self, spawnPos, shotBy, direction, world, gunData):
         # Load bullet sprite
@@ -121,6 +128,7 @@ class Bullet:
         for tile in self.world.world_group:
             if tile.collision and self.rect.colliderect(tile.rect):
                 self.dead = True
+
 
     def draw(self, screen, offset):
         screen.blit(self.sprite, (self.position.x - offset.x, self.position.y - offset.y))

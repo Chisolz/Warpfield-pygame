@@ -6,10 +6,14 @@ import gun
 class Enemy:
     def __init__(self, world, hp, scale, sightRadius):
         self.world = world
+        self.in_world = True
         self.flipped = False
         self.position = pygame.math.Vector2(0, 0)
         self.direction = pygame.math.Vector2(0, 0)
         self.state = None
+        self.sprite = None
+        self.original_sprite = None
+        self.flash_timer = 0
         self.sightRadius = sightRadius
         self.innerRadius = sightRadius - 50
         self.moving = False
@@ -32,22 +36,35 @@ class Enemy:
         self.rect = pygame.Rect(self.position.x, self.position.y, 50, 50)
 
     def update(self, dt):
-        # Check if hit by bullet
-        for bullet in self.world.bullets:
-            if self.rect.colliderect(bullet.rect) and bullet.shotBy == 'Player':
+        
+        inMap = False
+        
+        for bullet in self.world.bullets: # Check if hit by bullet
+            if self.rect.colliderect(bullet.rect) and bullet.shotBy == 'Player': # Check if bullet was shot by player
                 bullet.dead = True
+                self.flash_red()
                 self.health -= bullet.damage
+        
+        for tile in self.world.world_group: # Check if enemy is inside the map
+            if self.rect.colliderect(tile.rect):
+                inMap = True
+                break
 
-        if self.health <= 0:
+        if self.health <= 0 or inMap == False: # Confirms if enemy is dead
             self.dead = True
 
-        if self.direction.length_squared() != 0:
+        if self.direction.length_squared() != 0: # Normalize direction
             self.direction = self.direction.normalize()
 
-        if self.direction.x < 0:
+        if self.direction.x < 0: # Flip gun based on direction
             self.flipped = True
         else:
             self.flipped = False
+            
+        if self.flash_timer > 0: # Reset enemy sprite after flash effect
+            self.flash_timer -= dt * 1000
+            if self.flash_timer <= 0:
+                self.sprite = self.original_sprite.copy()
 
         move = self.direction * self.speed * dt
         new_position = self.position + move
@@ -97,6 +114,16 @@ class Enemy:
         distance_x = self.position.x - closest_x
         distance_y = self.position.y - closest_y
         return (distance_x ** 2 + distance_y ** 2) < (circle_radius ** 2)
+    
+    
+    def flash_red(self):
+        if self.original_sprite:
+            self.sprite = self.original_sprite.copy()
+            red_overlay = pygame.Surface(self.sprite.get_size(), pygame.SRCALPHA)
+            red_overlay.fill((255, 0, 0, 100))
+            self.sprite.blit(red_overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+            self.flash_timer = 100
+            
 
     def draw(self, window, offset):
         pass
@@ -109,7 +136,7 @@ class Skeleboi(Enemy):
         w, h = sprite.get_width(), sprite.get_height()
         sprite.set_colorkey((0, 0, 0))
         self.sprite = pygame.transform.scale(sprite, (w * self.scale, h * self.scale))
-        self.spriteFlipped = pygame.transform.flip(self.sprite, True, False)
+        self.original_sprite = self.sprite.copy()
         self.rect = pygame.Rect(position.x, position.y, self.sprite.get_width(), self.sprite.get_height())
         self.position = position.copy()
         self.rect.topleft = position
@@ -180,9 +207,8 @@ class Skeleboi(Enemy):
         super().update(dt)
 
     def draw(self, window, offset):
-        selectedSprite = self.spriteFlipped if self.flipped else self.sprite
         rotation_angle = math.sin(self.sway_time) * self.sway_amplitude
-        rotated_sprite = pygame.transform.rotate(selectedSprite, rotation_angle)
+        rotated_sprite = pygame.transform.rotate(self.sprite, rotation_angle)
         window.blit(rotated_sprite, self.position - offset)
         self.gun.draw(window, offset)
 
