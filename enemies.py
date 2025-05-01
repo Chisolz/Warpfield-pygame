@@ -35,8 +35,13 @@ class Enemy:
         self.canShoot = True
         self.lastShot = 0
         self.gun = gun.Gun()
-        self.gun.select_gun('smg')
         self.rect = pygame.Rect(self.position.x, self.position.y, 50, 50)
+        
+        index = random.randint(1, 2)
+        if index == 1:
+            self.gun.select_gun('pistol')
+        else:
+            self.gun.select_gun('smg')
 
     def update(self, dt):
         

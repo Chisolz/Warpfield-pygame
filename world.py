@@ -16,7 +16,7 @@ class World:
         self.bl_origin = None
         self.world_group = pygame.sprite.Group()
         self.world = self.initialize_world()
-        self.enemies = [enemies.Skeleboi(self, pygame.math.Vector2(500, 500))]
+        self.enemies = []
         self.bullets = []
         self.items = []
         self.player = None
@@ -26,6 +26,18 @@ class World:
         self.can_choose = False
         self.spawn_time = 10000
         self.last_spawn = 0
+        
+        # Wave Attributes
+        self.current_wave = 1
+        self.enemies_to_spawn = 5
+        self.enemies_spawned = 0
+        self.wave_active = True
+        self.wave_cooldown = 7000
+        self.last_wave = 0
+        
+        # Enemy spawn timer
+        self.spawn_interval = 1000  # Time between enemy spawns (in ms)
+        self.last_spawn_time = 0
         
         
     
@@ -64,7 +76,7 @@ class World:
     def update(self, dt):
         current_time = pygame.time.get_ticks()
     
-        # Update bullets and enemies
+        # Update bullets, enemies, and items
         self.bullets = [bullet for bullet in self.bullets if not bullet.dead]
         self.enemies = [enemy for enemy in self.enemies if not enemy.dead]
         self.items = [item for item in self.items if not item.equipped]
@@ -78,15 +90,33 @@ class World:
         for enemy in self.enemies:
             enemy.update(dt)
 
-        
-        if current_time - self.spawn_time >= self.last_spawn:
-            self.last_spawn = current_time
-            spawnTiles = [tile for tile in self.world_group if not tile.collision]
-            idx = random.randrange(0, len(spawnTiles) - 1)
-            selected_tile = spawnTiles[idx]
-            enemy = enemies.Skeleboi(self, selected_tile.position)
-            self.enemies.append(enemy)
-        
+        # Handle wave spawns
+        if self.wave_active:
+            # Spawn enemies at regular intervals
+            if self.enemies_spawned < self.enemies_to_spawn and current_time - self.last_spawn_time >= self.spawn_interval:
+                # Spawn an enemy
+                spawn_tiles = [tile for tile in self.world_group if not tile.collision]
+                if spawn_tiles:
+                    idx = random.randrange(0, len(spawn_tiles))
+                    selected_tile = spawn_tiles[idx]
+                    enemy = enemies.Skeleboi(self, selected_tile.position)
+                    self.enemies.append(enemy)
+                    self.enemies_spawned += 1
+                    self.last_spawn_time = current_time
+
+            # Check if the wave is complete
+            if self.enemies_spawned == self.enemies_to_spawn and not self.enemies:
+                self.wave_active = False
+                self.last_wave_time = current_time
+
+        # Start the next wave after cooldown
+        if not self.wave_active and current_time - self.last_wave_time >= self.wave_cooldown:
+            self.current_wave += 1
+            self.enemies_to_spawn += 3
+            self.enemies_spawned = 0
+            self.wave_active = True
+            
+            
         # Only allow choosing after the cooldown
         if current_time - self.last_choice >= self.choice_time:
             self.can_choose = True

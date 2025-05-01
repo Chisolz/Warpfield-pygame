@@ -3,7 +3,6 @@ import Scenes
 from SceneManager import SceneManager
 
 pygame.init()
-pygame.font.init()
 
 Window = pygame.display.set_mode((850, 600))
 Clock = pygame.time.Clock()
@@ -37,4 +36,3 @@ while running:
     scene_manager.selected_scene.draw()
     
     pygame.display.flip()
-pygame.quit()

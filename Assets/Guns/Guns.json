@@ -2,7 +2,7 @@
   "pistol": {
     "spread": 5,
     "fire rate": 350,
-    "damage": 500,
+    "damage": 5,
     "speed": 250,
     "bps": 1,
     "offsetX": -35,
