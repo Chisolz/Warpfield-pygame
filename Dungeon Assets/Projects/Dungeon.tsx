@@ -6,7 +6,7 @@
  <properties>
   <property name="test" type="bool" value="false"/>
  </properties>
- <image source="../Map.png" width="112" height="80"/>
+ <image source="../../Assets/Map/Map.png" width="112" height="80"/>
  <tile id="0">
   <properties>
    <property name="hasCollision" type="bool" value="true"/>

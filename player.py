@@ -68,6 +68,20 @@ class Player(pygame.sprite.Sprite):
                 bullet.dead = True
                 self.health -= bullet.damage
         
+        for item in self.world.items:
+            if self.rect.colliderect(item.rect):
+                item.in_contact = True
+                if item.type == 'health':
+                    item.equipped = True
+                    self.health += item.health
+                if item.type == 'gun':
+                    if keys[pygame.K_e]:
+                        item.equipped = True
+                        self.gun.select_gun(item.name)
+            
+            else:
+                item.in_contact = False
+        
         # Get mouse input 
         if pygame.mouse.get_pressed()[0] and self.canShoot:
             self.canShoot = False

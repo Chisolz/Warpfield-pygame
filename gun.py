@@ -34,6 +34,7 @@ class Gun:
         if gunName in self.guns:
             self.gunName = gunName
             self.selectedGun = self.guns[gunName]
+            self.rotated_gun = self.selectedGun
     
     
     def update(self, player_position, mouse_position, camera_offset):
@@ -63,6 +64,7 @@ class Gun:
             offset_x, offset_y = self.gunData[self.gunName]['offsetX'], self.gunData[self.gunName]['offsetY']
             self.offset_position = (player_position[0] + offset_x, player_position[1] + offset_y)
 
+
     def Eupdate(self, enemy_position, aim_direction):
         # Only update if selected gun is not None
         if self.selectedGun:
@@ -75,17 +77,12 @@ class Gun:
             offset_y = self.gunData[self.gunName]['offsetY']
             self.offset_position = (enemy_position.x, enemy_position.y)
     
+    
     def draw(self, window, offset):
         x = self.offset_position[0]
         y = self.offset_position[1]
         window.blit(self.rotated_gun, (x - offset.x, y - offset.y))
-
-
-class GunDrop(Gun):
-    def __init__(self, spawnPos, gunName):
-        super().__init__()
-        self.position = spawnPos
-        self.gunName = gunName
+    
         
 
 class Bullet:

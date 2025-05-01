@@ -18,11 +18,14 @@ class World:
         self.world = self.initialize_world()
         self.enemies = [enemies.Skeleboi(self, pygame.math.Vector2(500, 500))]
         self.bullets = []
+        self.items = []
         self.player = None
         self.choice_time = 15000 # This is in ms
         self.chunk_update = None
         self.last_choice = 0
         self.can_choose = False
+        self.spawn_time = 10000
+        self.last_spawn = 0
         
         
     
@@ -64,13 +67,26 @@ class World:
         # Update bullets and enemies
         self.bullets = [bullet for bullet in self.bullets if not bullet.dead]
         self.enemies = [enemy for enemy in self.enemies if not enemy.dead]
+        self.items = [item for item in self.items if not item.equipped]
     
         for bullet in self.bullets:
             bullet.update(dt)
         
+        for item in self.items:
+            item.update(dt)
+        
         for enemy in self.enemies:
             enemy.update(dt)
-    
+
+        
+        if current_time - self.spawn_time >= self.last_spawn:
+            self.last_spawn = current_time
+            spawnTiles = [tile for tile in self.world_group if not tile.collision]
+            idx = random.randrange(0, len(spawnTiles) - 1)
+            selected_tile = spawnTiles[idx]
+            enemy = enemies.Skeleboi(self, selected_tile.position)
+            self.enemies.append(enemy)
+        
         # Only allow choosing after the cooldown
         if current_time - self.last_choice >= self.choice_time:
             self.can_choose = True
@@ -105,6 +121,8 @@ class World:
         for bullet in self.bullets:
             bullet.draw(surface, offset)
         
+        for item in self.items:
+            item.draw(offset)
     
         for enemy in self.enemies:
             enemy.draw(surface, offset)

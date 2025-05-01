@@ -2,6 +2,8 @@ import pygame
 import random
 import math
 import gun
+import ItemDrops
+from UserInterface import HealthBar
 
 class Enemy:
     def __init__(self, world, hp, scale, sightRadius):
@@ -22,6 +24,7 @@ class Enemy:
         self.speed = 100
         self.new_pos = self.position.copy()
         self.health = hp
+        self.healthbar = HealthBar(0, 0, 60, 15, hp)
         self.picking_time = 5000
         self.strafe_timer = 0
         self.strafe_dir = 1
@@ -51,6 +54,7 @@ class Enemy:
                 break
 
         if self.health <= 0 or inMap == False: # Confirms if enemy is dead
+            self.world.items.append(self.drop_item())
             self.dead = True
 
         if self.direction.length_squared() != 0: # Normalize direction
@@ -77,6 +81,16 @@ class Enemy:
 
         self.position = new_position
         self.rect.topleft = (self.position.x, self.position.y)
+        
+        # Change health bar value
+        self.healthbar.value = self.health
+        self.healthbar.update()
+        
+        # Store health bar position in local variable
+        health_bar_position = pygame.math.Vector2(self.rect.bottomleft[0] - 35, self.rect.bottomleft[1] + 10)
+        
+        self.healthbar.x = health_bar_position.x
+        self.healthbar.y = health_bar_position.y
 
     def resolve_collisions(self, new_position):
         # Move horizontally
@@ -123,7 +137,15 @@ class Enemy:
             red_overlay.fill((255, 0, 0, 100))
             self.sprite.blit(red_overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
             self.flash_timer = 100
-            
+    
+    
+    def drop_item(self):
+        index = random.randrange(1, 3)
+        if index == 1 or index == 3:
+            return ItemDrops.Gun(self.position, self.gun.gunName)
+        elif index == 2:
+            return ItemDrops.HealthDrop(self.position)
+    
 
     def draw(self, window, offset):
         pass
@@ -211,6 +233,9 @@ class Skeleboi(Enemy):
         rotated_sprite = pygame.transform.rotate(self.sprite, rotation_angle)
         window.blit(rotated_sprite, self.position - offset)
         self.gun.draw(window, offset)
+        
+        if self.health != 150:
+             self.healthbar.draw(window, offset)
 
         # Draw collision box
         #pygame.draw.rect(window, 'red', self.rect.move(-offset))

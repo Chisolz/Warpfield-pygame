@@ -1,20 +1,20 @@
 {
   "pistol": {
     "spread": 5,
-    "fire rate": 500,
-    "damage": 5,
+    "fire rate": 350,
+    "damage": 500,
     "speed": 250,
     "bps": 1,
     "offsetX": -35,
     "offsetY": -20
   },
   "smg": {
-    "spread": 10,
+    "spread": 5,
     "fire rate": 100,
-    "damage": 30,
+    "damage": 10,
     "speed": 300,
     "bps": 1,
     "offsetX": -50,
-    "offsetY": -15
+    "offsetY": -5
   }
 }
