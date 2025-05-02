@@ -3,18 +3,36 @@
     "spread": 5,
     "fire rate": 350,
     "damage": 5,
-    "speed": 250,
+    "speed": 300,
     "bps": 1,
     "offsetX": -35,
     "offsetY": -20
   },
   "smg": {
-    "spread": 5,
+    "spread": 10,
     "fire rate": 100,
     "damage": 10,
-    "speed": 300,
+    "speed": 350,
     "bps": 1,
     "offsetX": -50,
     "offsetY": -5
+  },
+  "shotgun": {
+    "spread": 55,
+    "fire rate": 1500,
+    "damage": 10,
+    "speed": 300,
+    "bps": 6,
+    "offsetX": -70,
+    "offsetY": -40
+  },
+  "sniper": {
+    "spread": 2,
+    "fire rate": 1575,
+    "damage": 65,
+    "speed": 550,
+    "bps": 1,
+    "offsetX": -70,
+    "offsetY": -40
   }
 }

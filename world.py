@@ -29,6 +29,7 @@ class World:
         
         # Wave Attributes
         self.current_wave = 1
+        self.wave_index = 5
         self.enemies_to_spawn = 5
         self.enemies_spawned = 0
         self.wave_active = True
@@ -75,6 +76,10 @@ class World:
     
     def update(self, dt):
         current_time = pygame.time.get_ticks()
+        
+        for enemy in self.enemies:
+            if enemy.killed:
+                self.player.souls += 1
     
         # Update bullets, enemies, and items
         self.bullets = [bullet for bullet in self.bullets if not bullet.dead]
@@ -95,11 +100,20 @@ class World:
             # Spawn enemies at regular intervals
             if self.enemies_spawned < self.enemies_to_spawn and current_time - self.last_spawn_time >= self.spawn_interval:
                 # Spawn an enemy
+                idx = self.wave_index / 5
+                enemy_levels = {
+                    1: [enemies.Skeleboi],
+                    2: [enemies.Skeleboi, enemies.DevilDare]
+                }
                 spawn_tiles = [tile for tile in self.world_group if not tile.collision]
+                
+                available_spawns = enemy_levels.get(idx)
+                selected_enemy = random.choice(available_spawns)
+                
                 if spawn_tiles:
                     idx = random.randrange(0, len(spawn_tiles))
                     selected_tile = spawn_tiles[idx]
-                    enemy = enemies.Skeleboi(self, selected_tile.position)
+                    enemy = selected_enemy(self, selected_tile.position)
                     self.enemies.append(enemy)
                     self.enemies_spawned += 1
                     self.last_spawn_time = current_time
@@ -115,13 +129,15 @@ class World:
             self.enemies_to_spawn += 3
             self.enemies_spawned = 0
             self.wave_active = True
+            if self.current_wave > self.wave_index:
+                self.wave_index += 5
             
             
         # Only allow choosing after the cooldown
         if current_time - self.last_choice >= self.choice_time:
             self.can_choose = True
 
-        # Flag to track if we already found where player is
+        # Flag to track if player is found
         player_in_chunk = False
     
         for chunk in self.world.values():

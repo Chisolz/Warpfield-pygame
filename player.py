@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = (self.position.x, self.position.y)
         self.spritesheet = Spritesheet("Assets/Player/Player.png")
         self.gun = gun.Gun()
-        self.gun.select_gun('pistol')
+        self.gun.select_gun('sniper')
         self.sway_amplitude = 10
         self.sway_speed = 10
         self.sway_time = 0
@@ -41,6 +41,16 @@ class Player(pygame.sprite.Sprite):
             pygame.transform.flip(self.sprites[1], True, False)
         ]
         self.selectedSprite = pygame.transform.scale(self.sprites[0], (12 * 3, 12 * 3))
+        
+        self.souls = 0 # Currency in-game
+        
+        self.stats = {
+            'Trigger Happy': 0, # Fire rate modifier
+            'Spare Bullets': 0, # Bps modifier
+            'Accurate': 0, # Bullet spread modifier
+            'Juice Up': 0, # Health modifier
+            'Hard Noggin': 0 # Defense modifier
+        }
     
     
     def update(self, dt, offset):
@@ -60,13 +70,13 @@ class Player(pygame.sprite.Sprite):
             self.frameTime = 0
         
         # Shot cooldown
-        if current_time - self.lastShot >= gun_data['fire rate']:
+        if current_time - self.lastShot >= max(100, gun_data['fire rate'] - self.stats['Trigger Happy']):
             self.canShoot = True
             
         for bullet in self.world.bullets:
             if self.rect.colliderect(bullet.rect) and bullet.shotBy == 'Enemy':
                 bullet.dead = True
-                self.health -= bullet.damage
+                self.health -= max(5, bullet.damage - self.stats['Hard Noggin'])
         
         for item in self.world.items:
             if self.rect.colliderect(item.rect):
@@ -92,8 +102,11 @@ class Player(pygame.sprite.Sprite):
             vectorNormal = vector.normalize()
             spawnPos = (self.gun.offset_position[0], self.gun.offset_position[1])
             
-            for _ in range(gun_data['bps']):
-                self.world.bullets.append(gun.Bullet(spawnPos, 'Player', vectorNormal, self.world, gun_data))
+            data = gun_data
+            data['spread'] = max(0, data['spread'] - self.stats['Accurate'])
+            
+            for _ in range(gun_data['bps'] + self.stats['Spare Bullets']):
+                self.world.bullets.append(gun.Bullet(spawnPos, 'Player', vectorNormal, self.world, data))
         
         new_pos = self.position.copy()
         

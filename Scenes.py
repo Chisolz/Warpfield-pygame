@@ -35,6 +35,8 @@ class GameScene(Scene):
     def update(self, dt):
         self.CameraGroup.update(dt)
         self.world.update(dt)
+        wave = self.world.current_wave
+        self.waves_text = font.render(f'Kills {self.player.souls}', False, 'White')
     
     
     def draw(self):

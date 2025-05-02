@@ -33,15 +33,12 @@ class Enemy:
         self.sway_time = 0
         self.offset_x = None
         self.canShoot = True
+        self.killed = False
         self.lastShot = 0
         self.gun = gun.Gun()
+        self.gun.select_gun('pistol')
         self.rect = pygame.Rect(self.position.x, self.position.y, 50, 50)
-        
-        index = random.randint(1, 2)
-        if index == 1:
-            self.gun.select_gun('pistol')
-        else:
-            self.gun.select_gun('smg')
+
 
     def update(self, dt):
         
@@ -58,8 +55,12 @@ class Enemy:
                 inMap = True
                 break
 
-        if self.health <= 0 or inMap == False: # Confirms if enemy is dead
+        if self.health <= 0: # Confirms if enemy is dead
             self.world.items.append(self.drop_item())
+            self.killed = True
+            self.dead = True
+        
+        if inMap == False:
             self.dead = True
 
         if self.direction.length_squared() != 0: # Normalize direction
@@ -153,7 +154,7 @@ class Enemy:
     
 
     def draw(self, window, offset):
-        pass
+        self.healthbar.draw(window, offset)
 
 
 class Skeleboi(Enemy):
@@ -170,6 +171,16 @@ class Skeleboi(Enemy):
         self.last_pick = 0
         self.can_pick = True
         self.new_pos = self.position.copy()
+        self.speed = 150
+        
+        index = random.randint(1, 3)
+        if index == 1:
+            self.gun.select_gun('pistol')
+        elif index == 2:
+            self.gun.select_gun('smg')
+        else: 
+            self.gun.select_gun('sniper')
+
 
     def update(self, dt):
         current_time = pygame.time.get_ticks()
@@ -238,14 +249,100 @@ class Skeleboi(Enemy):
         rotated_sprite = pygame.transform.rotate(self.sprite, rotation_angle)
         window.blit(rotated_sprite, self.position - offset)
         self.gun.draw(window, offset)
-        
-        if self.health != 150:
-             self.healthbar.draw(window, offset)
+        super().draw(window, offset)
 
-        # Draw collision box
-        #pygame.draw.rect(window, 'red', self.rect.move(-offset))
+
+
+class DevilDare(Enemy):
+    def __init__(self, world, position):
+        super().__init__(world, 200, 3, 200)
+        sprite = pygame.image.load('Assets/Enemies/DevilDare.png').convert()
+        w, h = sprite.get_width(), sprite.get_height()
+        sprite.set_colorkey((0, 0, 0))
+        self.sprite = pygame.transform.scale(sprite, (w * self.scale, h * self.scale))
+        self.original_sprite = self.sprite.copy()
+        self.rect = pygame.Rect(position.x, position.y, self.sprite.get_width(), self.sprite.get_height())
+        self.position = position.copy()
+        self.rect.topleft = position
+        self.last_pick = 0
+        self.can_pick = True
+        self.new_pos = self.position.copy()
         
+        index = random.randint(1, 3)
+        if index == 1:
+            self.gun.select_gun('shotgun')
+        elif index == 2:
+            self.gun.select_gun('smg')
+        else: 
+            self.gun.select_gun('sniper')
+    
+    
+    def update(self, dt):
+        current_time = pygame.time.get_ticks()
+        gunData = self.gun.gunData[self.gun.gunName]
+        desired_distance = 125
+        to_player = self.world.player.position - self.position
+        distance = to_player.length()
+        direction = to_player.normalize() if distance != 0 else pygame.Vector2(0, 0)
+
+        if current_time - self.last_pick >= self.picking_time:
+            self.can_pick = True
+        if current_time - self.lastShot >= gunData['fire rate']:
+            self.canShoot = True
         
-        # Draw sight radii
-        #pygame.draw.circle(window, 'blue', self.position - offset, self.sightRadius)
-        #pygame.draw.circle(window, 'yellow', self.position - offset, self.innerRadius)
+        inSight = self.circle_rect_collision(self.sightRadius, self.world.player.rect)
+        inRange = self.circle_rect_collision(self.innerRadius, self.world.player.rect)
+        if inRange and self.canShoot:
+            self.state = 'Shooting'
+        elif inSight:
+            self.state = 'Follow'
+        else:
+            self.state = 'Roam'
+
+        if self.state == 'Follow':
+            self.direction = direction
+            self.strafe_timer += dt
+            if self.strafe_timer >= 1.0:
+                self.strafe_timer = 0
+                self.strafe_dir *= -1
+
+            strafe = pygame.math.Vector2(-direction.y, direction.x) * self.strafe_dir * 0.5
+
+            if distance > desired_distance + 10:
+                self.direction = (direction + strafe).normalize()
+            elif distance < desired_distance - 10:
+                self.direction = (-direction + strafe).normalize()
+            else:
+                self.direction = strafe.normalize() if strafe.length_squared() != 0 else pygame.math.Vector2(0, 0)
+
+        elif self.state == 'Shooting':
+            if self.canShoot:
+                self.canShoot = False
+                self.lastShot = current_time
+                for _ in range(gunData['bps']):
+                    bullet = gun.Bullet(self.position, 'Enemy', to_player, self.world, gunData)
+                    self.world.bullets.append(bullet)
+
+        elif self.state == 'Roam':
+            if self.can_pick:
+                self.can_pick = False
+                self.last_pick = current_time
+                choice = random.randrange(1, 5)
+                if choice in [1, 2]:
+                    self.direction = direction
+                else:
+                    dir = pygame.math.Vector2(random.randrange(-10, 10), random.randrange(-10, 10))
+                    if dir.length_squared() != 0:
+                        self.direction = dir.normalize()
+                    else:
+                        self.direction = pygame.math.Vector2(1, 0)
+        
+        super().update(dt)
+        
+
+    def draw(self, window, offset):
+        rotation_angle = math.sin(self.sway_time) * self.sway_amplitude
+        rotated_sprite = pygame.transform.rotate(self.sprite, rotation_angle)
+        window.blit(rotated_sprite, self.position - offset)
+        self.gun.draw(window, offset)
+        super().draw(window, offset)
