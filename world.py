@@ -1,6 +1,7 @@
 import pygame
 import random
 import enemies
+from StatStore import StatShop
 from tile import Tile
 from WorldSegment import Chunk
 
@@ -30,7 +31,7 @@ class World:
         # Wave Attributes
         self.current_wave = 1
         self.wave_index = 5
-        self.enemies_to_spawn = 5
+        self.enemies_to_spawn = 6
         self.enemies_spawned = 0
         self.wave_active = True
         self.wave_cooldown = 7000
@@ -40,6 +41,13 @@ class World:
         self.spawn_interval = 1000  # Time between enemy spawns (in ms)
         self.last_spawn_time = 0
         
+        self.shop_open = False
+        self.shop = None
+        
+    def initialize_shop(self, player):
+        # Stat shop attributes
+        self.shop_open = False
+        self.shop = StatShop(player)
         
     
     def initialize_world(self):
@@ -99,6 +107,7 @@ class World:
         if self.wave_active:
             # Spawn enemies at regular intervals
             if self.enemies_spawned < self.enemies_to_spawn and current_time - self.last_spawn_time >= self.spawn_interval:
+                self.spawn_interval = random.randrange(1000, 8000)
                 # Spawn an enemy
                 idx = self.wave_index / 5
                 enemy_levels = {
@@ -122,11 +131,13 @@ class World:
             if self.enemies_spawned == self.enemies_to_spawn and not self.enemies:
                 self.wave_active = False
                 self.last_wave_time = current_time
+                self.shop.randomize_selected()
+                self.shop_open = True
 
-        # Start the next wave after cooldown
-        if not self.wave_active and current_time - self.last_wave_time >= self.wave_cooldown:
+        # Start the next wave after cooldown and shop closing
+        if not self.wave_active and current_time - self.last_wave >= self.wave_cooldown and not self.shop_open:
             self.current_wave += 1
-            self.enemies_to_spawn += 3
+            self.enemies_to_spawn += 2
             self.enemies_spawned = 0
             self.wave_active = True
             if self.current_wave > self.wave_index:
@@ -178,6 +189,7 @@ class World:
             chunk.selectChunk(preset_id)
             self.world[chunk.corner] = chunk
             self.chunk_update = None
+        
         
         if self.debug:
             for chunk in self.world.values():

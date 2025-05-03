@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = (self.position.x, self.position.y)
         self.spritesheet = Spritesheet("Assets/Player/Player.png")
         self.gun = gun.Gun()
-        self.gun.select_gun('sniper')
+        self.gun.select_gun('pistol')
         self.sway_amplitude = 10
         self.sway_speed = 10
         self.sway_time = 0
@@ -46,11 +46,16 @@ class Player(pygame.sprite.Sprite):
         
         self.stats = {
             'Trigger Happy': 0, # Fire rate modifier
-            'Spare Bullets': 0, # Bps modifier
+            'Pocket Bullets': 0, # Bps modifier
             'Accurate': 0, # Bullet spread modifier
             'Juice Up': 0, # Health modifier
             'Hard Noggin': 0 # Defense modifier
         }
+        
+        # I-Frames setup
+        self.invincible = False
+        self.i_frame_duration = 1000
+        self.last_hit_time = 0
     
     
     def update(self, dt, offset):
@@ -73,10 +78,25 @@ class Player(pygame.sprite.Sprite):
         if current_time - self.lastShot >= max(100, gun_data['fire rate'] - self.stats['Trigger Happy']):
             self.canShoot = True
             
+        # Check if health is greater than max
+        if self.health > self.maxHealth:
+            self.health = self.maxHealth
+        
+        # Check if health is below or equal to 0
+        if self.health <= 0:
+            pass
+            
+        # Check if I-Frames expired
+        if self.invincible and current_time - self.last_hit_time >= self.i_frame_duration:
+            self.invincible = False 
+        
+        # Check if hit by bullet
         for bullet in self.world.bullets:
-            if self.rect.colliderect(bullet.rect) and bullet.shotBy == 'Enemy':
+            if self.rect.colliderect(bullet.rect) and bullet.shotBy == 'Enemy' and not self.invincible:
                 bullet.dead = True
                 self.health -= max(5, bullet.damage - self.stats['Hard Noggin'])
+                self.invincible = True
+                self.last_hit_time = current_time
         
         for item in self.world.items:
             if self.rect.colliderect(item.rect):
@@ -105,7 +125,7 @@ class Player(pygame.sprite.Sprite):
             data = gun_data
             data['spread'] = max(0, data['spread'] - self.stats['Accurate'])
             
-            for _ in range(gun_data['bps'] + self.stats['Spare Bullets']):
+            for _ in range(gun_data['bps'] + self.stats['Pocket Bullets']):
                 self.world.bullets.append(gun.Bullet(spawnPos, 'Player', vectorNormal, self.world, data))
         
         new_pos = self.position.copy()
@@ -159,6 +179,7 @@ class Player(pygame.sprite.Sprite):
         
         # Change health bar value
         self.playerHP.value = self.health
+        self.playerHP.maxValue = self.maxHealth
         self.playerHP.update()
         
         # Store health bar position in local variable
@@ -195,6 +216,11 @@ class Player(pygame.sprite.Sprite):
     
     
     def draw(self, window, offset):
+        if self.invincible: # Flash player sprite if invincible
+            current_time = pygame.time.get_ticks()
+            if (current_time // 100) % 2 == 0:
+                return
+        
         rotation_angle = math.sin(self.sway_time) * self.sway_amplitude
         rotated_sprite = pygame.transform.rotate(self.selectedSprite, rotation_angle)
         rotated_rect = rotated_sprite.get_rect(center=(self.position.x, self.position.y))

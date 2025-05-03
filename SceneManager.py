@@ -5,6 +5,7 @@ import Scenes
 class SceneManager:
     def __init__(self):
         self.selected_scene = None
+        self.running = False
         self.scenes = {}
 
     def add_scene(self, name, scene):
