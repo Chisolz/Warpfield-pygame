@@ -39,7 +39,6 @@ class MenuScene(Scene):
     
     
     def quit_game(self):
-        print(self.SceneManager.running)
         self.SceneManager.running = False
     
     

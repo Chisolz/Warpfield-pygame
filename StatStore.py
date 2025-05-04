@@ -30,7 +30,7 @@ class StatShop():
             },
             'Trigger Happy' : {
                 'Icon' : 'Assets/Stats/Trigger Happy.png',
-                'Description' : 'Shortens fire rate.',
+                'Description' : 'Increases fire rate.',
                 'Price' : 5
             },
             'Juice Up' : {
@@ -63,26 +63,28 @@ class StatShop():
     
     
     def purchase_stat(self, button):
+        # Check if the player has enough souls
         if self.selected_stats[button]['Price'] > self.player.souls:
             return
-        
+    
+        # Deduct the price from the player's souls
         self.player.souls -= self.selected_stats[button]['Price']
+    
+        # Increase the price for the next purchase
         self.selected_stats[button]['Price'] += 3
-        
-        for key, value in list(self.selected_stats[button].items()):
-            if value == self.selected_stats[button]:
+    
+        # Find the correct stat key and update the player's stats
+        for key, value in self.stats.items():
+            if value == self.selected_stats[button]:  # Match the selected stat
                 if key == 'Trigger Happy' or key == 'Juice Up':
                     self.player.stats[key] += random.randrange(5, 15)
-                
-                if key == 'Hard Noggin' or key == 'Accurate':
+                elif key == 'Hard Noggin' or key == 'Accurate':
                     self.player.stats[key] += random.randrange(1, 5)
-                
-                if key == 'Pocket Bullets':
+                elif key == 'Pocket Bullets':
                     self.player.stats[key] += 1
-                
-            
-
-        
+                break  # Exit the loop once the stat is updated
+    
+        print(self.player.stats)  # Debugging: Print updated stats
         self.close_shop()
     
     

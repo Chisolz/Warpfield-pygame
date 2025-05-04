@@ -39,7 +39,7 @@ class World:
         
         # Enemy spawn timer
         self.spawn_interval = 1000  # Time between enemy spawns (in ms)
-        self.last_spawn_time = 0
+        self.last_spawn_time = pygame.time.get_ticks()
         
         self.shop_open = False
         self.shop = None

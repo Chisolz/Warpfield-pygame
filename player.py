@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         ]
         self.selectedSprite = pygame.transform.scale(self.sprites[0], (12 * 3, 12 * 3))
         
-        self.souls = 0 # Currency in-game
+        self.souls = 5 # Currency in-game
         
         self.stats = {
             'Trigger Happy': 0, # Fire rate modifier
