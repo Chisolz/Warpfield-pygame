@@ -5,6 +5,18 @@ import gun
 import ItemDrops
 from UserInterface import HealthBar
 
+bulletSounds = [
+    pygame.mixer.Sound('Sounds/explosion (1).wav'), # Shotgun sound 1 
+    pygame.mixer.Sound('Sounds/explosion.wav'), # Shotgun sound 2
+    pygame.mixer.Sound('Sounds/laserShoot (1).wav'), # Generic Shot Sound 1
+    pygame.mixer.Sound('Sounds/laserShoot (2).wav'), # Generic Shot Sound 2
+    pygame.mixer.Sound('Sounds/laserShoot.wav') # Generic Shot Sound 3
+]
+
+for sound in bulletSounds:
+    sound.set_volume(0.2)
+
+
 class Enemy:
     def __init__(self, world, hp, scale, sightRadius):
         self.world = world
@@ -159,7 +171,7 @@ class Enemy:
 
 class Skeleboi(Enemy):
     def __init__(self, world, position):
-        super().__init__(world, 150, 3, 250)
+        super().__init__(world, 75, 3, 250)
         sprite = pygame.image.load('Assets/Enemies/SkeleBoy.png').convert()
         w, h = sprite.get_width(), sprite.get_height()
         sprite.set_colorkey((0, 0, 0))
@@ -224,6 +236,10 @@ class Skeleboi(Enemy):
             if self.canShoot:
                 self.canShoot = False
                 self.lastShot = current_time
+                if self.gun.gunName == 'shotgun' or self.gun.gunName == 'sniper':
+                    bulletSounds[random.randrange(0, 1)].play()
+                else:
+                    bulletSounds[random.randrange(2, 4)].play()
                 for _ in range(gunData['bps']):
                     bullet = gun.Bullet(self.position, 'Enemy', to_player, self.world, gunData)
                     self.world.bullets.append(bullet)
@@ -255,7 +271,7 @@ class Skeleboi(Enemy):
 
 class DevilDare(Enemy):
     def __init__(self, world, position):
-        super().__init__(world, 200, 3, 200)
+        super().__init__(world, 150, 3, 200)
         sprite = pygame.image.load('Assets/Enemies/DevilDare.png').convert()
         w, h = sprite.get_width(), sprite.get_height()
         sprite.set_colorkey((0, 0, 0))
@@ -319,6 +335,10 @@ class DevilDare(Enemy):
             if self.canShoot:
                 self.canShoot = False
                 self.lastShot = current_time
+                if self.gun.gunName == 'shotgun' or self.gun.gunName == 'sniper':
+                    bulletSounds[random.randrange(0, 1)].play()
+                else:
+                    bulletSounds[random.randrange(2, 4)].play()
                 for _ in range(gunData['bps']):
                     bullet = gun.Bullet(self.position, 'Enemy', to_player, self.world, gunData)
                     self.world.bullets.append(bullet)

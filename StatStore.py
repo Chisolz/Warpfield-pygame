@@ -2,6 +2,7 @@ import pygame
 import random
 import UserInterface as ui
 
+not_enough_sound = pygame.mixer.Sound('Sounds/synth.wav')
 
 class StatShop():
     def __init__(self, player):
@@ -65,6 +66,7 @@ class StatShop():
     def purchase_stat(self, button):
         # Check if the player has enough souls
         if self.selected_stats[button]['Price'] > self.player.souls:
+            not_enough_sound.play()
             return
     
         # Deduct the price from the player's souls
@@ -84,12 +86,12 @@ class StatShop():
                     self.player.stats[key] += 1
                 break  # Exit the loop once the stat is updated
     
-        print(self.player.stats)  # Debugging: Print updated stats
         self.close_shop()
     
     
     def reroll(self):
         if self.player.souls < self.reroll_price:
+            not_enough_sound.play()
             return
         self.player.souls -= self.reroll_price
         self.reroll_price += 5
@@ -117,7 +119,7 @@ class StatShop():
     def draw(self):
         surface = pygame.display.get_surface()
         
-        overlay = pygame.Surface((surface.width, surface.height), pygame.SRCALPHA)
+        overlay = pygame.Surface((surface.get_width(), surface.get_height()), pygame.SRCALPHA)
         overlay.fill((114, 114, 114, 200))  # White with 200 alpha
 
         # Blit the transparent surface onto the main surface

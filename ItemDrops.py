@@ -5,7 +5,6 @@ import math
 import random
 from UserInterface import PickupUI
 
-
 class Item:
     def __init__(self, position, tipe):
         self.scale = 3

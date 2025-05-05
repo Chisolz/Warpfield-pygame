@@ -44,6 +44,28 @@ class World:
         self.shop_open = False
         self.shop = None
         
+    
+    def cleanup(self):
+        # Clear all sprite groups
+        self.world_group.empty()
+        
+        # Clear all lists
+        self.enemies.clear()
+        self.bullets.clear()
+        self.items.clear()
+        
+        # Clear world dictionary
+        for chunk in self.world.values():
+            chunk.cleanup()
+        self.world.clear()
+        
+        # Clear references
+        self.player = None
+        self.shop = None
+        self.world_group = None
+        self.world = None
+        self.chunk_update = None
+        
     def initialize_shop(self, player):
         # Stat shop attributes
         self.shop_open = False

@@ -117,6 +117,9 @@ class Bullet:
         self.rect = self.sprite.get_rect()
         self.shotBy = shotBy
         
+        if self.shotBy == 'Player':
+            self.speed += 200
+        
 
     def update(self, dt):
         self.position += self.direction * self.speed * dt

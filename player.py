@@ -1,8 +1,27 @@
 import pygame
 import gun
 import math
+import random
 from spritesheet import Spritesheet
 from UserInterface import HealthBar
+
+pygame.mixer.init()
+
+bulletSounds = [
+    pygame.mixer.Sound('Sounds/explosion (1).wav'), # Shotgun sound 1 
+    pygame.mixer.Sound('Sounds/explosion.wav'), # Shotgun sound 2
+    pygame.mixer.Sound('Sounds/laserShoot (1).wav'), # Generic Shot Sound 1
+    pygame.mixer.Sound('Sounds/laserShoot (2).wav'), # Generic Shot Sound 2
+    pygame.mixer.Sound('Sounds/laserShoot.wav') # Generic Shot Sound 3
+]
+
+for sound in bulletSounds:
+    sound.set_volume(0.2)
+
+collect_item = pygame.mixer.Sound('Sounds/pickupCoin.wav')
+
+hurt_sound = pygame.mixer.Sound('Sounds/hitHurt.wav')
+hurt_sound.set_volume(0.2)
 
 class Player(pygame.sprite.Sprite):
     
@@ -82,9 +101,6 @@ class Player(pygame.sprite.Sprite):
         if self.health > self.maxHealth:
             self.health = self.maxHealth
         
-        # Check if health is below or equal to 0
-        if self.health <= 0:
-            pass
             
         # Check if I-Frames expired
         if self.invincible and current_time - self.last_hit_time >= self.i_frame_duration:
@@ -97,15 +113,18 @@ class Player(pygame.sprite.Sprite):
                 self.health -= max(5, bullet.damage - self.stats['Hard Noggin'])
                 self.invincible = True
                 self.last_hit_time = current_time
+                hurt_sound.play()
         
         for item in self.world.items:
             if self.rect.colliderect(item.rect):
                 item.in_contact = True
                 if item.type == 'health':
+                    collect_item.play()
                     item.equipped = True
                     self.health += item.health
                 if item.type == 'gun':
                     if keys[pygame.K_e]:
+                        collect_item.play()
                         item.equipped = True
                         self.gun.select_gun(item.name)
             
@@ -124,6 +143,11 @@ class Player(pygame.sprite.Sprite):
             
             data = gun_data
             data['spread'] = max(0, data['spread'] - self.stats['Accurate'])
+            
+            if self.gun.gunName == 'shotgun' or self.gun.gunName == 'sniper':
+                bulletSounds[random.randrange(0, 1)].play()
+            else:
+                bulletSounds[random.randrange(2, 4)].play()
             
             for _ in range(gun_data['bps'] + self.stats['Pocket Bullets']):
                 self.world.bullets.append(gun.Bullet(spawnPos, 'Player', vectorNormal, self.world, data))
@@ -168,7 +192,7 @@ class Player(pygame.sprite.Sprite):
         
         # Update gun and player rectangle
         self.rect.topleft = [self.position.x, self.position.y]
-        self.gun.update(self.rect.center, mousePos, offset)
+        self.gun.update(self.rect.center + (30, 0), mousePos, offset)
         
         
         for tile in self.world.world_group:

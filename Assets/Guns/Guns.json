@@ -29,7 +29,7 @@
   "sniper": {
     "spread": 2,
     "fire rate": 1575,
-    "damage": 65,
+    "damage": 50,
     "speed": 550,
     "bps": 1,
     "offsetX": -70,

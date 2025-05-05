@@ -38,6 +38,20 @@ class Chunk:
         height = self.chunks['1']['layers'][1]['objects'][0]['height'] * scale
         self.rect = pygame.Rect(chunkPos.x, chunkPos.y, width, height)
     
+    def cleanup(self):
+        # Remove all tiles from the world group
+        for tile in self.selectedChunk:
+            if tile in self.world_group:
+                self.world_group.remove(tile)
+        
+        # Clear the selected chunk list
+        self.selectedChunk.clear()
+        
+        # Clear all references
+        self.world_group = None
+        self.chunks.clear()
+        self.rect = None
+        self.position = None
     
     def selectChunk(self, chunkNum):
         for tile in self.selectedChunk:

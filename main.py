@@ -15,9 +15,8 @@ pygame.display.set_caption('Warpfield')
 scene_manager = SceneManager()
 scene_manager.add_scene('Main Menu', Scenes.MenuScene(scene_manager))
 scene_manager.add_scene('GameScene', Scenes.GameScene(scene_manager))
+scene_manager.add_scene('Game Over', Scenes.GameOver(scene_manager, scene_manager.get_scene('GameScene').world))
 scene_manager.switch_scene('Main Menu')
-GameScene = scene_manager.get_scene('GameScene')
-
 scene_manager.running = True
 
 while scene_manager.running:
@@ -26,24 +25,20 @@ while scene_manager.running:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            scene_manager.running = False
+            scene_manager.quit_game()
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_h:
-                if scene_manager.selected_scene.world.debug:
-                    GameScene.world.debug = False
+                game_scene = scene_manager.get_scene('GameScene')
+                if game_scene.world.debug:
+                    game_scene.world.debug = False
                 else:
-                    GameScene.world.debug = True
+                    game_scene.world.debug = True
 
-    if scene_manager.get_current_scene() == GameScene:
-        scene_manager.selected_scene.update(DeltaTime)
-    else:
-        scene_manager.selected_scene.update()
+    scene_manager.selected_scene.update(DeltaTime)
     
     Window.fill('#141A36')
-    
     scene_manager.selected_scene.draw()
-    
     pygame.display.flip()
 
 pygame.quit()
